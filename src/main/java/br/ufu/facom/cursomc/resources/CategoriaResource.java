@@ -1,27 +1,29 @@
 package br.ufu.facom.cursomc.resources;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufu.facom.cursomc.domain.Categoria;
+import br.ufu.facom.cursomc.services.CategoriaService;
 
 @RestController
 @RequestMapping(value= "/categorias")
 public class CategoriaResource {
 	
-	@RequestMapping(method= RequestMethod.GET) // REQUISICAO BASICA = GET
-	public List<Categoria> listar() {
-		Categoria cat1 = new Categoria(1,"Informatica");
-		Categoria cat2 = new Categoria(2,"Escritorio");
+	@Autowired
+	private CategoriaService service;
+	
+	@RequestMapping(value="/{id}",method= RequestMethod.GET) // REQUISICAO BASICA = GET
+	public ResponseEntity<?> find(@PathVariable Integer id) {
+		// @PathVariable = faz com que {id} corresponda ao id passado como parametro
+		// ResponseEntity = armazena varias info de uma resposta HTTP para um servico REST
+			// O "?" significa que pode ser qualquer tipo, uma vez que a busca pode ser bem sucedida ou nao
 		
-		List<Categoria> lista = new ArrayList<>();
-		lista.add(cat1);
-		lista.add(cat2);
-		
-		return lista;
+		Categoria obj = service.buscar(id);
+		return ResponseEntity.ok().body(obj);
 	}
 }
