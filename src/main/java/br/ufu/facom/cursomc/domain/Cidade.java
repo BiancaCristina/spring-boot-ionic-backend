@@ -20,7 +20,6 @@ public class Cidade implements Serializable {
 	private Integer id;
 	private String nome;
 	
-	@JsonManagedReference
 	@ManyToOne // Coloca isso na cidade porque a relacao eh a seguinte: Muitas cidades -> Um estado
 	@JoinColumn(name="estado_id") // nome da chave estrangeira
 

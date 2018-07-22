@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Endereco implements Serializable{
@@ -26,7 +27,7 @@ public class Endereco implements Serializable{
 	private String cep;
 	
 	// Aplica Json quando quer retirar referencia ciclica -> ocorre, geralmente, em relacoes bidimensionais
-	@JsonBackReference //Endereco nao serializa cliente
+	@JsonIgnore //Endereco nao serializa cliente
 	@ManyToOne
 	@JoinColumn(name="cliente_id")
 	private Cliente cliente;

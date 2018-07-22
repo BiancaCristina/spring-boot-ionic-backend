@@ -29,13 +29,11 @@ public class Pedido implements Serializable {
 	@JsonFormat(pattern="dd/MM/yyyy HH:mm") // Usa isso aqui pra formatar a parte "instante"
 	private Date instante; // Instante que o pedido foi feito
 	
-	@JsonManagedReference // O pedido precisa vir associado ao pagamento
 	@OneToOne(cascade=CascadeType.ALL, mappedBy="pedido") 
 		// Essa parte do cascade eh uma notacao peculiar do JPA
 		// O mappedBy realiza o mapeamento 1:1 entre Pedido-Pagamento e garante que a ID do pedido seja igual a ID do pagamento
 	private Pagamento pagamento;
 	
-	@JsonManagedReference // Pedido serializa Cliente porque eh necessario que o pedido venha com o Cliente associado!
 	@ManyToOne
 	@JoinColumn(name="cliente_id")
 	private Cliente cliente;

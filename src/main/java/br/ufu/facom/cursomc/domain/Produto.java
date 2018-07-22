@@ -28,7 +28,7 @@ public class Produto implements Serializable{
 	private String nome;
 	private double preco;
 	
-	@JsonBackReference // O "BackReference" faz assim: "Em Categoria eu ja busquei os objetos, aqui eu nao preciso buscar mais -> omite a lista de Categoria pra cada Produto" 
+	@JsonIgnore // O "BackReference" faz assim: "Em Categoria eu ja busquei os objetos, aqui eu nao preciso buscar mais -> omite a lista de Categoria pra cada Produto" 
 	@ManyToMany 
 	@JoinTable(name = "PRODUTO_CATEGORIA",
 		joinColumns = @JoinColumn(name="produto_id"), 
