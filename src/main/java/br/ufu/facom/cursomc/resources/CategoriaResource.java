@@ -11,7 +11,7 @@ import br.ufu.facom.cursomc.domain.Categoria;
 import br.ufu.facom.cursomc.services.CategoriaService;
 
 @RestController
-@RequestMapping(value= "/categorias")
+@RequestMapping(value="/categorias")
 public class CategoriaResource {
 	
 	@Autowired

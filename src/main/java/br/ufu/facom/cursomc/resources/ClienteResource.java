@@ -11,7 +11,7 @@ import br.ufu.facom.cursomc.domain.Cliente;
 import br.ufu.facom.cursomc.services.ClienteService;
 
 @RestController
-@RequestMapping(value= "/clientes")
+@RequestMapping(value="/clientes")
 public class ClienteResource {
 	
 	@Autowired

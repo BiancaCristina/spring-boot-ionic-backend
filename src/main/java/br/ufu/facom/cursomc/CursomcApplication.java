@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import br.ufu.facom.cursomc.domain.Categoria;
 import br.ufu.facom.cursomc.domain.Cidade;
@@ -22,9 +24,18 @@ import br.ufu.facom.cursomc.repositories.EstadoRepository;
 import br.ufu.facom.cursomc.repositories.ProdutoRepository;
 
 @SpringBootApplication
+@EnableWebMvc
 public class CursomcApplication implements CommandLineRunner{
 	// Para alterar porta, vai no resources e coloca: server.port=${port:8081}, 8081 eh a porta nova!
-	
+    
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(CursomcApplication.class);
+    }
+
+	public static void main(String[] args) {
+		SpringApplication.run(CursomcApplication.class, args);
+	}
+
 	@Autowired
 	private CategoriaRepository categoriaRepository; // Repositorio eh quem salva dados
 	
@@ -43,10 +54,6 @@ public class CursomcApplication implements CommandLineRunner{
 	@Autowired
 	private EnderecoRepository enderecoRepository;
 	
-	public static void main(String[] args) {
-		SpringApplication.run(CursomcApplication.class, args);
-	}
-
 	@Override
 	public void run(String... args) throws Exception {
 		// Array as List = cria Lista automatica e posso colocar quantos elementos eu quiser dentro
@@ -63,10 +70,6 @@ public class CursomcApplication implements CommandLineRunner{
 		// Adicionando os produtos em cada categoria
 		cat1.getProdutos().addAll(Arrays.asList(p1,p2,p3));
 		cat2.getProdutos().addAll(Arrays.asList(p2));
-		
-		// Salvando no repositorio -> BD
-		categoriaRepository.saveAll(Arrays.asList(cat1,cat2));
-		produtoRepository.saveAll(Arrays.asList(p1,p2,p3));
 		
 		// Instancia dos estados
 		Estado est1 = new Estado(null,"Minas Gerais");
@@ -86,10 +89,6 @@ public class CursomcApplication implements CommandLineRunner{
 		p2.getCategorias().addAll(Arrays.asList(cat1,cat2));
 		p3.getCategorias().addAll(Arrays.asList(cat1));
 		
-		// Salvando no repositorio -> BD
-		estadoRepository.saveAll(Arrays.asList(est1,est2));
-		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
-		
 		// Instancia dos clientes
 		Cliente cli1 = new Cliente(null,"Maria Silva","maria@gmail.com","36378912377", TipoCliente.PESSOAFISICA);
 			cli1.getTelefones().addAll(Arrays.asList("27363323","93838393")); // Adiciona os telefones
@@ -102,8 +101,13 @@ public class CursomcApplication implements CommandLineRunner{
 		cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
 		
 		// Salvando no repositorio -> BD
+		categoriaRepository.saveAll(Arrays.asList(cat1,cat2));
+		produtoRepository.saveAll(Arrays.asList(p1,p2,p3));
+		estadoRepository.saveAll(Arrays.asList(est1,est2));
+		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
 		clienteRepository.saveAll(Arrays.asList(cli1));
 		enderecoRepository.saveAll(Arrays.asList(e1,e2));
+		
 		
 	}
 	
