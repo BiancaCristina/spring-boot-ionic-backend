@@ -2,14 +2,19 @@ package br.ufu.facom.cursomc.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+
+@Entity
 public class ItemPedido implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	// Chave composta entre Produto e Pedido
+	// Chave composta entre Produto e Pedido = ItemPedidoPL
 	private Double desconto;
 	private Integer quantidade;
 	private Double preco;
 	
+	@EmbeddedId // Isso significa que "id" eh um ID embutido em uma classe auxiliar
 	private ItemPedidoPK id = new ItemPedidoPK();
 	// Esse ID eh composto
 	

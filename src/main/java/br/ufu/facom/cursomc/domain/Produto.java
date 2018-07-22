@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -34,6 +35,7 @@ public class Produto implements Serializable{
 	) // JoinTable faz a terceira tabela do N:N
 	private List<Categoria> categorias = new ArrayList<>();
 	
+	@OneToMany(mappedBy="id.produto") // Eh "id.produto" porque esta mapeado na variavel produtos de ItemProduto
 	private Set<ItemPedido> itens = new HashSet<>();
 	
 	public Produto() {}

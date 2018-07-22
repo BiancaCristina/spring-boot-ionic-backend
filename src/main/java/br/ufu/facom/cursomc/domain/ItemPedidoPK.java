@@ -12,7 +12,8 @@ public class ItemPedidoPK implements Serializable{
 	// Nao precisa de construtor
 	private static final long serialVersionUID = 1L;
 	
-	@ManyToOne
+	// Eh "ManyToOne porque pode haver varios ItemPedido para um mesma combinacao de produto e pedido
+	@ManyToOne 
 	@JoinColumn(name="pedido_id")
 	private Pedido pedido;
 	
