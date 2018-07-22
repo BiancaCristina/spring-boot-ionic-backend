@@ -2,15 +2,27 @@ package br.ufu.facom.cursomc.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+
 import br.ufu.facom.cursomc.domain.enums.EstadoPagamento;
 
+@Entity
 public class Pagamento implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	@Id	// Esse ID precisa ser o mesmo ID do pedido
+	// Nao coloca o Generate aqui porque o ID vai ser igual ao do Pedido 
 	private Integer id;
 	private EstadoPagamento estado;
 	
-	private Pedido pedido;
+	@OneToOne 
+	@JoinColumn(name="pedido_id")
+	@MapsId // Isso aqui garant que a ID seja mesma do Pedido!
+	private Pedido pedido; 
 	
 	public Pagamento() {}
 

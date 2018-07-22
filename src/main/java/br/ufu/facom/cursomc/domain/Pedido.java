@@ -3,12 +3,25 @@ package br.ufu.facom.cursomc.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
+@Entity
 public class Pedido implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private Date instante; // Instante que o pedido foi feito
 	
+	@OneToOne(cascade=CascadeType.ALL, mappedBy="pedido") 
+		// Essa parte do cascade eh uma notacao peculiar do JPA
+		// O mappedBy realiza o mapeamento 1:1 entre Pedido-Pagamento e garante que a ID do pedido seja igual a ID do pagamento
 	private Pagamento pagamento;
 	
 	private Cliente cliente;
