@@ -1,7 +1,10 @@
 package br.ufu.facom.cursomc.domain;
 
+import javax.persistence.Entity;
+
 import br.ufu.facom.cursomc.domain.enums.EstadoPagamento;
 
+@Entity // Nao precisa colocar a parte do strategy porque eh herdado! 
 public class PagamentoComCartao extends Pagamento{
 	//Nao precisa colocar o implements Serializable, mas precisa definir o serialVersionUID
 	private static final long serialVersionUID = 1L;

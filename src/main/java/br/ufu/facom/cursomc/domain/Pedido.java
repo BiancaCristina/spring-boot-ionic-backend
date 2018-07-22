@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -24,8 +26,12 @@ public class Pedido implements Serializable {
 		// O mappedBy realiza o mapeamento 1:1 entre Pedido-Pagamento e garante que a ID do pedido seja igual a ID do pagamento
 	private Pagamento pagamento;
 	
+	@ManyToOne
+	@JoinColumn(name="cliente_id")
 	private Cliente cliente;
 	
+	@ManyToOne
+	@JoinColumn(name="endereco_de_entrega_id") // So precisa fazer aqui no pedido porque eh uma relacao unidimensional
 	private Endereco enderecoDeEntrega;
 	
 	public Pedido() {}
