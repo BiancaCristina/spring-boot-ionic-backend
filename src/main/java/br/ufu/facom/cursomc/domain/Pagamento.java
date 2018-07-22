@@ -14,13 +14,13 @@ import br.ufu.facom.cursomc.domain.enums.EstadoPagamento;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED) // Faz mapeamento por heranca usando a estrategia JOINED
-public class Pagamento implements Serializable {
+public abstract class Pagamento implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id	// Esse ID precisa ser o mesmo ID do pedido
 	// Nao coloca o Generate aqui porque o ID vai ser igual ao do Pedido 
 	private Integer id;
-	private EstadoPagamento estado;
+	private Integer estado;
 	
 	@OneToOne 
 	@JoinColumn(name="pedido_id")
@@ -32,7 +32,7 @@ public class Pagamento implements Serializable {
 	public Pagamento(Integer id, EstadoPagamento estado, Pedido pedido) {
 		super();
 		this.id = id;
-		this.estado = estado;
+		this.estado = estado.getCodigo();
 		this.pedido = pedido;
 	}
 
@@ -45,11 +45,11 @@ public class Pagamento implements Serializable {
 	}
 
 	public EstadoPagamento getEstado() {
-		return estado;
+		return EstadoPagamento.toEnum(estado);
 	}
 
 	public void setEstado(EstadoPagamento estado) {
-		this.estado = estado;
+		this.estado = estado.getCodigo();
 	}
 
 	public Pedido getPedido() {

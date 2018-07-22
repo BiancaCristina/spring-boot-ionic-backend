@@ -1,5 +1,6 @@
 package br.ufu.facom.cursomc;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +15,20 @@ import br.ufu.facom.cursomc.domain.Cidade;
 import br.ufu.facom.cursomc.domain.Cliente;
 import br.ufu.facom.cursomc.domain.Endereco;
 import br.ufu.facom.cursomc.domain.Estado;
+import br.ufu.facom.cursomc.domain.Pagamento;
+import br.ufu.facom.cursomc.domain.PagamentoComBoleto;
+import br.ufu.facom.cursomc.domain.PagamentoComCartao;
+import br.ufu.facom.cursomc.domain.Pedido;
 import br.ufu.facom.cursomc.domain.Produto;
+import br.ufu.facom.cursomc.domain.enums.EstadoPagamento;
 import br.ufu.facom.cursomc.domain.enums.TipoCliente;
 import br.ufu.facom.cursomc.repositories.CategoriaRepository;
 import br.ufu.facom.cursomc.repositories.CidadeRepository;
 import br.ufu.facom.cursomc.repositories.ClienteRepository;
 import br.ufu.facom.cursomc.repositories.EnderecoRepository;
 import br.ufu.facom.cursomc.repositories.EstadoRepository;
+import br.ufu.facom.cursomc.repositories.PagamentoRepository;
+import br.ufu.facom.cursomc.repositories.PedidoRepository;
 import br.ufu.facom.cursomc.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -54,6 +62,12 @@ public class CursomcApplication implements CommandLineRunner{
 	@Autowired
 	private EnderecoRepository enderecoRepository;
 	
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
+	
 	@Override
 	public void run(String... args) throws Exception {
 		// Array as List = cria Lista automatica e posso colocar quantos elementos eu quiser dentro
@@ -71,6 +85,15 @@ public class CursomcApplication implements CommandLineRunner{
 		cat1.getProdutos().addAll(Arrays.asList(p1,p2,p3));
 		cat2.getProdutos().addAll(Arrays.asList(p2));
 		
+		// Adicionando as categorias no produto
+		p1.getCategorias().addAll(Arrays.asList(cat1));
+		p2.getCategorias().addAll(Arrays.asList(cat1,cat2));
+		p3.getCategorias().addAll(Arrays.asList(cat1));
+		
+		// Salvando no repositorio -> BD
+		categoriaRepository.saveAll(Arrays.asList(cat1,cat2));
+		produtoRepository.saveAll(Arrays.asList(p1,p2,p3));
+		
 		// Instancia dos estados
 		Estado est1 = new Estado(null,"Minas Gerais");
 		Estado est2 = new Estado(null,"Sao Paulo");
@@ -83,11 +106,10 @@ public class CursomcApplication implements CommandLineRunner{
 		// Adicionando cidades nos estados
 		est1.getCidades().addAll(Arrays.asList(c1));
 		est2.getCidades().addAll(Arrays.asList(c2,c3));
-		
-		// Adicionando as categorias no produto
-		p1.getCategorias().addAll(Arrays.asList(cat1));
-		p2.getCategorias().addAll(Arrays.asList(cat1,cat2));
-		p3.getCategorias().addAll(Arrays.asList(cat1));
+
+		// Salvando no repositorio -> BD
+		estadoRepository.saveAll(Arrays.asList(est1,est2));
+		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
 		
 		// Instancia dos clientes
 		Cliente cli1 = new Cliente(null,"Maria Silva","maria@gmail.com","36378912377", TipoCliente.PESSOAFISICA);
@@ -101,14 +123,29 @@ public class CursomcApplication implements CommandLineRunner{
 		cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
 		
 		// Salvando no repositorio -> BD
-		categoriaRepository.saveAll(Arrays.asList(cat1,cat2));
-		produtoRepository.saveAll(Arrays.asList(p1,p2,p3));
-		estadoRepository.saveAll(Arrays.asList(est1,est2));
-		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
 		clienteRepository.saveAll(Arrays.asList(cli1));
 		enderecoRepository.saveAll(Arrays.asList(e1,e2));
 		
+		// Instancia dos pedidos
+			// Objeto auxiliar para instanciacao dos pedidos
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); // Isso eh uma mascara de formatacao para instanciar datas
 		
+		Pedido ped1 = new Pedido(null,sdf.parse("30/09/2017 10:32"),cli1,e1);
+		Pedido ped2 = new Pedido(null,sdf.parse("10/10/2017 19:35"),cli1,e2);
+		
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		Pagamento pagto2 = new PagamentoComBoleto(null,EstadoPagamento.PENDENTE,ped2,sdf.parse("20/10/2017 00:00"), null);
+		
+		// Adiciona pagamentos no pedido
+		ped1.setPagamento(pagto1);
+		ped2.setPagamento(pagto2);
+		
+		// Adiciona pedidos no cliente
+		cli1.getPedidos().addAll(Arrays.asList(ped1,ped2));
+		
+		// Salvando no repositorio -> BD
+		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
 	}
 	
 	

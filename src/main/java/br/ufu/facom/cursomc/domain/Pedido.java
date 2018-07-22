@@ -36,11 +36,11 @@ public class Pedido implements Serializable {
 	
 	public Pedido() {}
 
-	public Pedido(Integer id, Date instante, Pagamento pagamento, Cliente cliente, Endereco enderecoDeEntrega) {
+	public Pedido(Integer id, Date instante, Cliente cliente, Endereco enderecoDeEntrega) {
 		super();
 		this.id = id;
 		this.instante = instante;
-		this.pagamento = pagamento;
+		// Apaguei pagamento para deixar essa classe independente do pagamento na INICIALIZACAO apenas
 		this.cliente = cliente;
 		this.enderecoDeEntrega = enderecoDeEntrega;
 	}
