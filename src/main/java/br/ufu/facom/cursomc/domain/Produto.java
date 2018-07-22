@@ -2,7 +2,9 @@ package br.ufu.facom.cursomc.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,6 +34,8 @@ public class Produto implements Serializable{
 	) // JoinTable faz a terceira tabela do N:N
 	private List<Categoria> categorias = new ArrayList<>();
 	
+	private Set<ItemPedido> itens = new HashSet<>();
+	
 	public Produto() {}
 
 	public Produto(Integer id, String nome, double preco) {
@@ -39,6 +43,17 @@ public class Produto implements Serializable{
 		this.id = id;
 		this.nome = nome;
 		this.preco = preco;
+	}
+	
+	public List<Pedido> getPedidos(){
+		List<Pedido> lista = new ArrayList<>();
+		
+		for(ItemPedido i: itens)
+		{
+			lista.add(i.getPedido());
+		}
+		
+		return lista;
 	}
 
 	public Integer getId() {
@@ -73,6 +88,14 @@ public class Produto implements Serializable{
 		this.categorias = categorias;
 	}
 	
+	public Set<ItemPedido> getItens() {
+		return itens;
+	}
+
+	public void setItens(Set<ItemPedido> itens) {
+		this.itens = itens;
+	}
+	
 	// HASHCODE AND EQUALS
 	@Override
 	public int hashCode() {
@@ -97,7 +120,5 @@ public class Produto implements Serializable{
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-	
-	
+	}	
 }
