@@ -15,6 +15,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Pedido implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -22,13 +25,17 @@ public class Pedido implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
+	
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm") // Usa isso aqui pra formatar a parte "instante"
 	private Date instante; // Instante que o pedido foi feito
 	
+	@JsonManagedReference // O pedido precisa vir associado ao pagamento
 	@OneToOne(cascade=CascadeType.ALL, mappedBy="pedido") 
 		// Essa parte do cascade eh uma notacao peculiar do JPA
 		// O mappedBy realiza o mapeamento 1:1 entre Pedido-Pagamento e garante que a ID do pedido seja igual a ID do pagamento
 	private Pagamento pagamento;
 	
+	@JsonManagedReference // Pedido serializa Cliente porque eh necessario que o pedido venha com o Cliente associado!
 	@ManyToOne
 	@JoinColumn(name="cliente_id")
 	private Cliente cliente;
@@ -37,9 +44,9 @@ public class Pedido implements Serializable {
 	@JoinColumn(name="endereco_de_entrega_id") // So precisa fazer aqui no pedido porque eh uma relacao unidimensional
 	private Endereco enderecoDeEntrega;
 	
+	// Como em ItemPedido a serializacao eh ignorada, entao, automaticamente, Pedido serializa ItemPedido
 	@OneToMany(mappedBy="id.pedido") // Eh id.pedido porque foi mapeado na variavel pedidos de ItemPedido
 	private Set<ItemPedido> itens = new HashSet<>();
-	
 	
 	public Pedido() {}
 

@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import br.ufu.facom.cursomc.domain.enums.EstadoPagamento;
 
 @Entity // Nao precisa colocar a parte do strategy porque eh herdado! 
@@ -11,7 +13,10 @@ public class PagamentoComBoleto extends Pagamento{
 	//Nao precisa colocar o implements Serializable, mas precisa definir o serialVersionUID
 	private static final long serialVersionUID = 1L;
 	
+	@JsonFormat(pattern="dd/MM/yyyy") // Usa isso aqui pra formatar a parte "instante"
 	private Date dataVencimento;
+	
+	@JsonFormat(pattern="dd/MM/yyyy") // Usa isso aqui pra formatar a parte "instante"
 	private Date dataPagamento;
 	
 	public PagamentoComBoleto() {}

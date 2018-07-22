@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class ItemPedido implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -14,6 +16,9 @@ public class ItemPedido implements Serializable{
 	private Integer quantidade;
 	private Double preco;
 	
+	@JsonIgnore // Essa parte sera ignorada, ou seja,
+				// ItemPedido nao serializa Pedido e;
+				// ItemPedido nao serializa Produto.
 	@EmbeddedId // Isso significa que "id" eh um ID embutido em uma classe auxiliar
 	private ItemPedidoPK id = new ItemPedidoPK();
 	// Esse ID eh composto
@@ -31,11 +36,14 @@ public class ItemPedido implements Serializable{
 		id.setPedido(pedido);
 		id.setProduto(produto);				
 	}
-
+	
+	// Assim como ocorreu em "Produto", os metodos get estao sendo serializados, entao precisa retirar isso	
+	@JsonIgnore
 	public Pedido getPedido() {
 		return id.getPedido();
 	}
 	
+	// Aqui nao precisa ignorar o Produto para que ele apareca
 	public Produto getProduto() {
 		return id.getProduto();
 	}
