@@ -11,7 +11,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.ufu.facom.cursomc.domain.Cliente;
-import br.ufu.facom.cursomc.domain.Cliente;
 import br.ufu.facom.cursomc.dto.ClienteDTO;
 import br.ufu.facom.cursomc.repositories.ClienteRepository;
 import br.ufu.facom.cursomc.services.exceptions.DataIntegrityException;
@@ -35,11 +34,17 @@ public class ClienteService {
 		// No outro, caso o ID nao seja nulo, entao irei fazer uma atualizacao em um ID que ja existe no meu BD
 		
 		// Verifica se o objeto existe
-		this.find(obj.getId()); // Caso o objeto nao exista, esse metodo ja lanca a excecao!
-		
-		return repo.save(obj);
+		Cliente newObj = this.find(obj.getId()); // Caso o objeto nao exista, esse metodo ja lanca a excecao!
+		this.updateData(newObj,obj); // Salva os dados de newObj de acordo com os dados previos de obj
+		return repo.save(newObj);
 	}
 	
+	private void updateData(Cliente newObj,Cliente obj) {
+		// Eh um metodo privado porque eh so um metodo auxiliar que vou usar exclusivamente na ClienteService
+		// So preciso setar Nome e Email porque sao os atributos que eu nao coloquei em ClienteDTO
+		newObj.setNome(obj.getNome());
+		newObj.setEmail(obj.getEmail());
+	}
 	public void delete(Integer id) {
 		// Verifica se ID existe
 		this.find(id);
@@ -51,7 +56,7 @@ public class ClienteService {
 		
 		catch (DataIntegrityViolationException e)
 		{
-			throw new DataIntegrityException("Nao eh possivel excluir uma categoria que possui produtos");
+			throw new DataIntegrityException("Nao eh possivel excluir um cliente que possui entidades relacionadas");
 		}		
 	}
 	
@@ -68,7 +73,6 @@ public class ClienteService {
 	
 	public Cliente fromDTO(ClienteDTO objDTO) {
 		// Metodo auxiliar que instancia um objeto do tipo Cliente a partir de um objeto do tipo ClienteDTO
-		//return new Cliente(objDTO.getId(),objDTO.getNome());
-		throw new UnsupportedOperationException(); // Solucao temporaria, tenho que implementar aqui depois
+		return new Cliente(objDTO.getId(),objDTO.getNome(),objDTO.getEmail(),null,null);
 	}
 }
