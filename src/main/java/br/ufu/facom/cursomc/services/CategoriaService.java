@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.ufu.facom.cursomc.domain.Categoria;
+import br.ufu.facom.cursomc.dto.CategoriaDTO;
 import br.ufu.facom.cursomc.repositories.CategoriaRepository;
 import br.ufu.facom.cursomc.services.exceptions.DataIntegrityException;
 import br.ufu.facom.cursomc.services.exceptions.ObjectNotFoundException;
@@ -69,5 +70,10 @@ public class CategoriaService {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction),orderBy);
 		
 		return repo.findAll(pageRequest);
+	}
+	
+	public Categoria fromDTO(CategoriaDTO objDTO) {
+		// Metodo auxiliar que instancia um objeto do tipo Categoria a partir de um objeto do tipo CategoriaDTO
+		return new Categoria(objDTO.getId(),objDTO.getNome());
 	}
 }
