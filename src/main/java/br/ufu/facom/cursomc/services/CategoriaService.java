@@ -3,6 +3,7 @@ package br.ufu.facom.cursomc.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import br.ufu.facom.cursomc.domain.Categoria;
@@ -37,5 +38,21 @@ public class CategoriaService {
 		this.find(obj.getId()); // Caso o objeto nao exista, esse metodo ja lanca a excecao!
 		
 		return repo.save(obj);
+	}
+	
+	public void delete(Integer id) {
+		// Verifica se ID existe
+		this.find(id);
+		
+		try 
+		{			
+			repo.deleteById(id);
+		}
+		
+		catch (DataIntegrityViolationException e)
+		{
+			throw new DataIntegrityException("Nao eh possivel excluir uma categoria que possui produtos");
+		}
+		
 	}
 }
