@@ -29,6 +29,5 @@ public class ResourceExceptionHandler {
 		// HttpStatus.BAD_REQUEST = error 400
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
-	}
-	
+	}	
 }

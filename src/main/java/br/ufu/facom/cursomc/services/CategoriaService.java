@@ -1,5 +1,6 @@
 package br.ufu.facom.cursomc.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,8 @@ import org.springframework.stereotype.Service;
 
 import br.ufu.facom.cursomc.domain.Categoria;
 import br.ufu.facom.cursomc.repositories.CategoriaRepository;
-import br.ufu.facom.cursomc.services.exceptions.*;
+import br.ufu.facom.cursomc.services.exceptions.DataIntegrityException;
+import br.ufu.facom.cursomc.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {
@@ -52,7 +54,11 @@ public class CategoriaService {
 		catch (DataIntegrityViolationException e)
 		{
 			throw new DataIntegrityException("Nao eh possivel excluir uma categoria que possui produtos");
-		}
-		
+		}		
+	}
+	
+	public List<Categoria> findAll(){
+		// Esse metodo retorna todas as categorias quando digitar o URL "/categoria"
+		return repo.findAll();
 	}
 }
