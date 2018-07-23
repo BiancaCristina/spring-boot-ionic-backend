@@ -22,12 +22,11 @@ public class CategoriaResource {
 	private CategoriaService service;
 	
 	@RequestMapping(value="/{id}",method= RequestMethod.GET) // REQUISICAO BASICA = GET
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	public ResponseEntity<Categoria> find(@PathVariable Integer id) {
 		// @PathVariable = faz com que {id} corresponda ao id passado como parametro
-		// ResponseEntity = armazena varias info de uma resposta HTTP para um servico REST
-			// O "?" significa que pode ser qualquer tipo, uma vez que a busca pode ser bem sucedida ou nao
+		// ResponseEntity = armazena varias info de uma resposta HTTP para um servico REST			
 		
-		Categoria obj = service.buscar(id);
+		Categoria obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
@@ -42,5 +41,13 @@ public class CategoriaResource {
 		// Esse uri serve pra me dar a url da nova categoria que inseri
 		
 		return ResponseEntity.created(uri).build();		
+	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id) {
+		obj.setId(id); // Comando feito pra garantir que o objeto que eu to passando tenha ID que eu quero atualizar
+		obj = service.update(obj);
+		
+		return ResponseEntity.noContent().build();
 	}
 }

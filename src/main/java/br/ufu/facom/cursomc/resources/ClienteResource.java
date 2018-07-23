@@ -18,12 +18,11 @@ public class ClienteResource {
 	private ClienteService service;
 	
 	@RequestMapping(value="/{id}",method= RequestMethod.GET) // REQUISICAO BASICA = GET
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	public ResponseEntity<Cliente> find(@PathVariable Integer id) {
 		// @PathVariable = faz com que {id} corresponda ao id passado como parametro
 		// ResponseEntity = armazena varias info de uma resposta HTTP para um servico REST
-			// O "?" significa que pode ser qualquer tipo, uma vez que a busca pode ser bem sucedida ou nao
-		
-		Cliente obj = service.buscar(id);
+			
+		Cliente obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 }

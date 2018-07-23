@@ -15,7 +15,7 @@ public class PedidoService {
 	@Autowired // Isso faz com que a dependencia seja automaticamente instanciada pelo String
 	private PedidoRepository repo; 
 		
-	public Pedido buscar(Integer id) {
+	public Pedido find(Integer id) {
 		Optional<Pedido> obj = repo.findById(id);
 		// TRATAMENTO DE ERRO PARA CASO NAO EXISTA OBJETO
 		return obj.orElseThrow( () -> new ObjectNotFoundException(

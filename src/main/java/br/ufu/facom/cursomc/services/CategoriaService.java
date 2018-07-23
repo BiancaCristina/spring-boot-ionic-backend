@@ -15,7 +15,7 @@ public class CategoriaService {
 	@Autowired // Isso faz com que a dependencia seja automaticamente instanciada pelo String
 	private CategoriaRepository repo; 
 		
-	public Categoria buscar(Integer id) {
+	public Categoria find(Integer id) {
 		Optional<Categoria> obj = repo.findById(id);
 		// TRATAMENTO DE ERRO PARA CASO NAO EXISTA OBJETO
 		return obj.orElseThrow( () -> new ObjectNotFoundException(
@@ -26,6 +26,16 @@ public class CategoriaService {
 		obj.setId(null);
 		// Se esse obj tiver algum ID, o metodo save vai considerar que eh uma atualizacao e nao uma insercao
 		// Logo, o comando acima garante que estou inserindo um objeto do tipo Categoria com ID nulo
+		return repo.save(obj);
+	}
+	
+	public Categoria update (Categoria obj) {
+		// A diferenca entre update e inser eh que em um eu preciso garantir que ID seja nulo (insert),
+		// No outro, caso o ID nao seja nulo, entao irei fazer uma atualizacao em um ID que ja existe no meu BD
+		
+		// Verifica se o objeto existe
+		this.find(obj.getId()); // Caso o objeto nao exista, esse metodo ja lanca a excecao!
+		
 		return repo.save(obj);
 	}
 }

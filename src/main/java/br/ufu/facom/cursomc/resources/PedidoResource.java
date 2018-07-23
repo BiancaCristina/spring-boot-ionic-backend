@@ -18,12 +18,11 @@ public class PedidoResource {
 	private PedidoService service;
 	
 	@RequestMapping(value="/{id}",method= RequestMethod.GET) // REQUISICAO BASICA = GET
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	public ResponseEntity<Pedido> find(@PathVariable Integer id) {
 		// @PathVariable = faz com que {id} corresponda ao id passado como parametro
 		// ResponseEntity = armazena varias info de uma resposta HTTP para um servico REST
-			// O "?" significa que pode ser qualquer tipo, uma vez que a busca pode ser bem sucedida ou nao
-		
-		Pedido obj = service.buscar(id);
+			
+		Pedido obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 }

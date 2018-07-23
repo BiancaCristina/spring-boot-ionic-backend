@@ -15,7 +15,7 @@ public class ClienteService {
 	@Autowired // Isso faz com que a dependencia seja automaticamente instanciada pelo String
 	private ClienteRepository repo; 
 		
-	public Cliente buscar(Integer id) {
+	public Cliente find(Integer id) {
 		Optional<Cliente> obj = repo.findById(id);
 		// TRATAMENTO DE ERRO PARA CASO NAO EXISTA OBJETO
 		return obj.orElseThrow( () -> new ObjectNotFoundException(
