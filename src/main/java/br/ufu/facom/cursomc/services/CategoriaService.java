@@ -41,9 +41,15 @@ public class CategoriaService {
 		// No outro, caso o ID nao seja nulo, entao irei fazer uma atualizacao em um ID que ja existe no meu BD
 		
 		// Verifica se o objeto existe
-		this.find(obj.getId()); // Caso o objeto nao exista, esse metodo ja lanca a excecao!
-		
-		return repo.save(obj);
+		Categoria newObj = this.find(obj.getId()); // Caso o objeto nao exista, esse metodo ja lanca a excecao!
+		this.updateData(newObj,obj); // Salva os dados de newObj de acordo com os dados previos de obj
+		return repo.save(newObj);
+	}
+	
+	private void updateData(Categoria newObj,Categoria obj) {
+		// Eh um metodo privado porque eh so um metodo auxiliar que vou usar exclusivamente na CategoriaService
+		// So preciso setar Nome e Email porque sao os atributos que eu nao coloquei em CategoriaDTO
+		newObj.setNome(obj.getNome());
 	}
 	
 	public void delete(Integer id) {
