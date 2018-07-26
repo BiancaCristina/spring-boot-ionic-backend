@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.Length;
 import br.ufu.facom.cursomc.domain.Cliente;
 
 public class ClienteDTO implements Serializable {
+	// Esse DTO difere do ClienteNewDTO porque nao serve para insercoes
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id;

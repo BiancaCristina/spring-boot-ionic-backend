@@ -1,5 +1,6 @@
 package br.ufu.facom.cursomc.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.ufu.facom.cursomc.domain.Cliente;
 import br.ufu.facom.cursomc.dto.ClienteDTO;
+import br.ufu.facom.cursomc.dto.ClienteNewDTO;
 import br.ufu.facom.cursomc.services.ClienteService;
 
 @RestController
@@ -33,6 +36,19 @@ public class ClienteResource {
 			
 		Cliente obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
+	}
+	
+	@RequestMapping(method=RequestMethod.POST) // Faz com que seja um metodo POST
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDTO) {
+		//@RequestBody = faz o Json ser convertido automaticamente para o objeto java
+		Cliente obj = service.fromDTO(objDTO); // Converte CategoriaDTO em Categoria
+		obj = service.insert(obj); // Chama o metodo "insert" do objeto "service" que eh do tipo CategoriaService
+		// Http status code = mostra os codigos http padrao 
+		
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		// Esse uri serve pra me dar a url da nova categoria que inseri
+		
+		return ResponseEntity.created(uri).build();		
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)

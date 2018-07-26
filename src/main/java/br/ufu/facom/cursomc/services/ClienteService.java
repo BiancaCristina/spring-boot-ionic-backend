@@ -3,6 +3,8 @@ package br.ufu.facom.cursomc.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -10,9 +12,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import br.ufu.facom.cursomc.domain.Cidade;
 import br.ufu.facom.cursomc.domain.Cliente;
+import br.ufu.facom.cursomc.domain.Endereco;
+import br.ufu.facom.cursomc.domain.enums.TipoCliente;
 import br.ufu.facom.cursomc.dto.ClienteDTO;
+import br.ufu.facom.cursomc.dto.ClienteNewDTO;
 import br.ufu.facom.cursomc.repositories.ClienteRepository;
+import br.ufu.facom.cursomc.repositories.EnderecoRepository;
 import br.ufu.facom.cursomc.services.exceptions.DataIntegrityException;
 import br.ufu.facom.cursomc.services.exceptions.ObjectNotFoundException;
 
@@ -21,12 +28,25 @@ public class ClienteService {
 	
 	@Autowired // Isso faz com que a dependencia seja automaticamente instanciada pelo String
 	private ClienteRepository repo; 
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 		
 	public Cliente find(Integer id) {
 		Optional<Cliente> obj = repo.findById(id);
 		// TRATAMENTO DE ERRO PARA CASO NAO EXISTA OBJETO
 		return obj.orElseThrow( () -> new ObjectNotFoundException(
 				"Objeto nao encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
+	}
+	
+	@Transactional
+	public Cliente insert (Cliente obj) {
+		obj.setId(null);
+		// Se esse obj tiver algum ID, o metodo save vai considerar que eh uma atualizacao e nao uma insercao
+		// Logo, o comando acima garante que estou inserindo um objeto do tipo Categoria com ID nulo
+		obj = repo.save(obj);
+		enderecoRepository.saveAll(obj.getEnderecos());
+		return obj;
 	}
 	
 	public Cliente update (Cliente obj) {
@@ -75,5 +95,19 @@ public class ClienteService {
 	public Cliente fromDTO(ClienteDTO objDTO) {
 		// Metodo auxiliar que instancia um objeto do tipo Cliente a partir de um objeto do tipo ClienteDTO
 		return new Cliente(objDTO.getId(),objDTO.getNome(),objDTO.getEmail(),null,null);
+	}
+	
+	public Cliente fromDTO(ClienteNewDTO objDTO) {
+		Cliente cli = new Cliente(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpfOUcnpj(), TipoCliente.toEnum(objDTO.getTipo()));
+		Cidade cid = new Cidade(objDTO.getCidadeId(),null,null);
+		Endereco end = new Endereco(null, objDTO.getLogradouro(), objDTO.getNumero(), objDTO.getComplemento(), objDTO.getBairro(), objDTO.getCep(), cli, cid);
+		cli.getEnderecos().add(end);
+		cli.getTelefones().add(objDTO.getTelefone1());
+		
+		// Adicionando os telefone2 e telefone3 (opcionais)
+		if (objDTO.getTelefone2() != null) cli.getTelefones().add(objDTO.getTelefone2());
+		if (objDTO.getTelefone3() != null) cli.getTelefones().add(objDTO.getTelefone3());
+		
+		return cli;
 	}
 }
