@@ -20,7 +20,7 @@ public class Categoria implements Serializable {
 	private Integer id;
 	private String nome;
 	
-	@ManyToMany(mappedBy="categorias",cascade=CascadeType.ALL) // Isso significa que o mapeamento feito aqui eh tal qual o mapeamento feito na classe "Produto" no atributo "categorias"
+	@ManyToMany(mappedBy="categorias") // Isso significa que o mapeamento feito aqui eh tal qual o mapeamento feito na classe "Produto" no atributo "categorias"
 									   // Nao precisa repetir todo o mapeamento que fez la em produtos
 	private List<Produto> produtos = new ArrayList<>();
 	
