@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -29,11 +31,14 @@ public class Cliente implements Serializable {
 	private String cpfOUcnpj;
 	private Integer tipo; // INTERNAMENTE EH UM INTEGER, EXTERNAMENTE = TIPOCLIENTE
 	
-	@OneToMany(mappedBy="cliente")
+	@OneToMany(mappedBy="cliente",cascade=CascadeType.ALL)
+	// O cascade (acao em cascata) faz com que toda operacao que modifica o cliente, reflete em cascata nos enderecos.
+	// O cascade tambem impede que a delecao seja barrada por causa dos enderecos, ou seja, um cliente pode ser apagado mesmo tendo enderecos (so nao pode ser apagado caso tenha pedidos)
 	private List<Endereco> enderecos = new ArrayList<>();
 	
 	// Como esse Set<String> nao vem de outra classe, o mapeamento ocorre de forma diferente
 	@ElementCollection
+	// @ElementCollection = serve para mapear uma coleção em memória (no caso a lista de telefones) para uma tabela no banco de dados relacional.Assim, se você coloca essa anotação sobre uma lista de strings (como foi o caso), será criada uma tabela contendo dois campos: a chave estrangeira e o valor do string.
 	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>(); // Set = colecao(List) sem repeticao
 	

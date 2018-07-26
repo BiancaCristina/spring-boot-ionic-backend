@@ -31,6 +31,9 @@ public class ClienteService {
 	
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	// Eh preciso fazer um repositorio do endereco porque, diferentemente dos telefones, nao ha um "ElementCollection" que indique o salvamento automatico dos enderecos no BD
+	// Logo, eh preciso usar o enderecoRepository e salvar o endereco criado para insercao desse cliente
+	// @ElementCollection = serve para mapear uma coleção em memória (no caso a lista de telefones) para uma tabela no banco de dados relacional.Assim, se você coloca essa anotação sobre uma lista de strings (como foi o caso), será criada uma tabela contendo dois campos: a chave estrangeira e o valor do string.
 		
 	public Cliente find(Integer id) {
 		Optional<Cliente> obj = repo.findById(id);
@@ -67,6 +70,12 @@ public class ClienteService {
 	}
 	
 	public void delete(Integer id) {
+		// So podemos excluir se o cliente nao possuir clientes
+		// Caso exclua, deve apagar os enderecos associados ao cliente (porque um Endereco nao pode existir sem um Cliente)
+		
+		// A unica diferenca entre esse delete e o da Categoria eh que tive que adicionar o "cascade" na classe Cliente do dominio, ou seja,
+		// Quando apagar um cliente, os enderecos serao apagados em cascata
+		
 		// Verifica se ID existe
 		this.find(id);
 		
