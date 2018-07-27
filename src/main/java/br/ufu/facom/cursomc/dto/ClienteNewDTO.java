@@ -2,28 +2,52 @@ package br.ufu.facom.cursomc.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+import br.ufu.facom.cursomc.services.validation.ClienteInsert;
+
+@ClienteInsert
 public class ClienteNewDTO implements Serializable{
 	// Essa classe difere da ClienteDTO porque eh utilizada nas insercoes apenas e nao usa ID como parametro (uma vez que quando insere nao precisa colocar o ID, isso eh feito automaticamente)
 	private static final long serialVersionUID = 1L;
 	
 	// Dados vindos da classe Cliente
+	@NotEmpty(message= "Preenchimento obrigatorio")
+	@Length(min=5,max=120,message="O tamanho deve ser entre 5 e 120 caracteres")
 	private String nome;
+	
+	@NotEmpty(message= "Preenchimento obrigatorio")
+	@Length(min=5,max=120,message="O tamanho deve ser entre 5 e 120 caracteres")
 	private String email;
+	
+	@NotEmpty(message= "Preenchimento obrigatorio")
 	private String cpfOUcnpj;
+	
 	private Integer tipo;
 	
 	// Dados vindo da classe Endereco
+	@NotEmpty(message= "Preenchimento obrigatorio")
 	private String logradouro;
+	
+	@NotEmpty(message= "Preenchimento obrigatorio")
 	private String numero;
+	
 	private String complemento;
+	
 	private String bairro;
+	
+	@NotEmpty(message= "Preenchimento obrigatorio")
 	private String cep;
 	
 	// Um endereco precisa da cidade, entao eu pego o ID da cidade correspondente
 	private Integer cidadeId;
 	
 	// Telefones (o 2 e 3 serao opcionais)
+	@NotEmpty(message= "Preenchimento obrigatorio")
 	private String telefone1;
+	
 	private String telefone2;
 	private String telefone3;
 	
