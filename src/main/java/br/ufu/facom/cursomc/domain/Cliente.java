@@ -8,12 +8,14 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.ufu.facom.cursomc.domain.enums.TipoCliente;
@@ -27,7 +29,10 @@ public class Cliente implements Serializable {
 	private Integer id;
 	
 	private String nome;
+	
+	@Column(unique=true) // Alem disso aqui, preciso fazer uma validacao para poder lancar minha propria excecao
 	private String email;
+	
 	private String cpfOUcnpj;
 	private Integer tipo; // INTERNAMENTE EH UM INTEGER, EXTERNAMENTE = TIPOCLIENTE
 	
