@@ -37,6 +37,11 @@ public class ItemPedido implements Serializable{
 		id.setProduto(produto);				
 	}
 	
+	public double getSubTotal() {
+		// Eu uso o "get" aqui para que o Json serialize esse metodo e o subTotal apareca no POSTMAN
+		return (preco - desconto) * quantidade;
+	}
+	
 	// Assim como ocorreu em "Produto", os metodos get estao sendo serializados, entao precisa retirar isso	
 	@JsonIgnore
 	public Pedido getPedido() {
