@@ -37,7 +37,7 @@ public class ProdutoService {
 		
 		List<Categoria> categorias = categoriaRepository.findAllById(ids); // Gera a lista de categorias a partir da lista de IDS (ids)
 		
-		return repo.search(nome, categorias, pageRequest);
+		return repo.findDistinctByNomeContainingAndCategoriasIn(nome, categorias, pageRequest);
 		
 	}
 }

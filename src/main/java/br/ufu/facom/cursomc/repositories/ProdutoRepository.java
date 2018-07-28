@@ -6,9 +6,8 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.ufu.facom.cursomc.domain.Categoria;
 import br.ufu.facom.cursomc.domain.Produto;
@@ -23,6 +22,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
 	// Logo, o que esta dentro do (" ") indica a busca que eu quero fazer em JPQL
 	// @Param("nome") serve para que o parametro "String nome" seja capturado e substitua na busca JPQL
 	// @Param("categorias") faz a mesma coisa que o @Param("nome")
-	@Query("SELECT DISTINCT obj FROM Produto obj INNER JOIN obj.categorias cat WHERE obj.nome LIKE %:nome% AND cat IN :categorias")
-	Page<Produto> search(@Param("nome") String nome, @Param("categorias")List<Categoria> categorias, Pageable pageRequest);
+	@Transactional(readOnly=true)
+	Page<Produto> findDistinctByNomeContainingAndCategoriasIn(String nome,List<Categoria> categorias, Pageable pageRequest);
+	
 }
