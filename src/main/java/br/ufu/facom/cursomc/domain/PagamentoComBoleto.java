@@ -1,14 +1,13 @@
 package br.ufu.facom.cursomc.domain;
 
 import java.util.Date;
-
 import javax.persistence.Entity;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import br.ufu.facom.cursomc.domain.enums.EstadoPagamento;
 
-@Entity // Nao precisa colocar a parte do strategy porque eh herdado! 
+@Entity // Nao precisa colocar a parte do strategy porque eh herdado!
+@JsonTypeName("pagamentoComBoleto")
 public class PagamentoComBoleto extends Pagamento{
 	//Nao precisa colocar o implements Serializable, mas precisa definir o serialVersionUID
 	private static final long serialVersionUID = 1L;
