@@ -11,6 +11,7 @@ import br.ufu.facom.cursomc.domain.PagamentoComCartao;
 public class JacksonConfig {
 	// https://stackoverflow.com/questions/41452598/overcome-can-not-construct-instance-ofinterfaceclass-without-hinting-the-pare
 	// Registra as subclasses "PagamentoComCartao" e "PagamentoComBoleto" pro @type (?)
+	
 	@Bean
 	public Jackson2ObjectMapperBuilder objectMapperBuilder() {
 		Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder() {
@@ -18,7 +19,7 @@ public class JacksonConfig {
 				objectMapper.registerSubtypes(PagamentoComCartao.class);
 				objectMapper.registerSubtypes(PagamentoComBoleto.class);
 				super.configure(objectMapper);
-			}
+			};
 		};
 		return builder;
 	}

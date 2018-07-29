@@ -9,13 +9,20 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import br.ufu.facom.cursomc.domain.enums.EstadoPagamento;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED) // Faz mapeamento por heranca usando a estrategia JOINED
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type") // Esse @type eh usado para identificar se eh pagamentoComBoleto ou pagamentoComCartao
+@JsonTypeInfo(use= JsonTypeInfo.Id.NAME,include= JsonTypeInfo.As.PROPERTY, property= "@type") // Esse @type eh usado para identificar se eh pagamentoComBoleto ou pagamentoComCartao
+@JsonSubTypes({@JsonSubTypes.Type(value = PagamentoComBoleto.class, name = "pagamentoComBoleto"),
+    @JsonSubTypes.Type(value = PagamentoComCartao.class, name = "pagamentoComCartao")
+})
+
 public abstract class Pagamento implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
