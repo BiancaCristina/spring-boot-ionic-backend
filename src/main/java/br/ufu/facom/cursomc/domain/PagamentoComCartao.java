@@ -1,7 +1,7 @@
 package br.ufu.facom.cursomc.domain;
 
 import javax.persistence.Entity;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import br.ufu.facom.cursomc.domain.enums.EstadoPagamento;
 
 @Entity // Nao precisa colocar a parte do strategy porque eh herdado! 
