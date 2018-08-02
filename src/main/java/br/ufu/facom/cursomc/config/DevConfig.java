@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import br.ufu.facom.cursomc.services.DBService;
+import br.ufu.facom.cursomc.services.EmailService;
+import br.ufu.facom.cursomc.services.SmtpEmailService;
 
 // Classe que guarda as configs de teste
 
@@ -34,5 +36,10 @@ public class DevConfig {
 		dbService.instantiateTestDataBase();
 		
 		return true; // So eh um metodo boolean porque nao pode ser void, dai sempre retorna true
+	}
+	
+	@Bean // Instancia a classe Smtp
+	public EmailService emailService() {
+		return new SmtpEmailService();
 	}
 }

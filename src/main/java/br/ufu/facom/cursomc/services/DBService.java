@@ -133,7 +133,7 @@ public class DBService {
 		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
 		
 		// Instancia dos clientes
-		Cliente cli1 = new Cliente(null,"Maria Silva","maria@gmail.com","36378912377", TipoCliente.PESSOAFISICA);
+		Cliente cli1 = new Cliente(null,"Maria Silva","bibizinha.flamengo@gmail.com","36378912377", TipoCliente.PESSOAFISICA);
 			cli1.getTelefones().addAll(Arrays.asList("27363323","93838393")); // Adiciona os telefones
 			
 		// Instancia dos enderecos
