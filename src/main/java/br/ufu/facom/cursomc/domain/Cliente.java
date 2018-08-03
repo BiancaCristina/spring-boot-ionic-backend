@@ -36,6 +36,9 @@ public class Cliente implements Serializable {
 	private String cpfOUcnpj;
 	private Integer tipo; // INTERNAMENTE EH UM INTEGER, EXTERNAMENTE = TIPOCLIENTE
 	
+	@JsonIgnore // Pra nao aparecer a senha na hora de recuperar os dados no sistema
+	private String senha;
+	
 	@OneToMany(mappedBy="cliente",cascade=CascadeType.ALL)
 	// O cascade (acao em cascata) faz com que toda operacao que modifica o cliente, reflete em cascata nos enderecos.
 	// O cascade tambem impede que a delecao seja barrada por causa dos enderecos, ou seja, um cliente pode ser apagado mesmo tendo enderecos (so nao pode ser apagado caso tenha pedidos)
@@ -53,13 +56,14 @@ public class Cliente implements Serializable {
 	
 	public Cliente() {}
 
-	public Cliente(Integer id, String nome, String email, String cpfOUcnpj, TipoCliente tipo) {
+	public Cliente(Integer id, String nome, String email, String cpfOUcnpj, TipoCliente tipo, String senha) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.cpfOUcnpj = cpfOUcnpj;
 		this.tipo = (tipo==null) ? null : tipo.getCodigo(); // Significa: Se tipo==null, entao atribuo null, caso contrario pego o codigo
+		this.senha = senha;
 	}
 
 	public Integer getId() {
@@ -126,7 +130,15 @@ public class Cliente implements Serializable {
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
 	}
-		
+	
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+	
 	// HASH CODE E EQUALS
 	@Override
 	public int hashCode() {
