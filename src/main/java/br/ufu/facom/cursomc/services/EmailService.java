@@ -6,6 +6,7 @@ import br.ufu.facom.cursomc.domain.Pedido;
 
 public interface EmailService {
 	
+	// Texto plano (simples)
 	void sendOrderConfirmationEmail(Pedido obj);
 	void sendEmail(SimpleMailMessage msg);
 }
