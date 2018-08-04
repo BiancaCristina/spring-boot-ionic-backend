@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import br.ufu.facom.cursomc.services.exceptions.AuthorizationException;
 import br.ufu.facom.cursomc.services.exceptions.DataIntegrityException;
 import br.ufu.facom.cursomc.services.exceptions.ObjectNotFoundException;
 
@@ -17,7 +18,6 @@ public class ResourceExceptionHandler {
 	// Cria-se essa classe como alternativa ao "try-catch" para capturar a excecao de quando o objeto nao existe
 	
 	@ExceptionHandler(ObjectNotFoundException.class)
-	
 	public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e, HttpServletRequest request){
 		StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage(),System.currentTimeMillis());
 		// HttpStatus.NOT_Found = error 404
@@ -45,5 +45,12 @@ public class ResourceExceptionHandler {
 		}
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+	}
+	
+	@ExceptionHandler(AuthorizationException.class)
+	public ResponseEntity<StandardError> authorization (AuthorizationException e, HttpServletRequest request){
+		// Esse metodo trata a excecao de autorizacao
+		StandardError err = new StandardError(HttpStatus.FORBIDDEN.value(), e.getMessage(), System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
 	}
 }

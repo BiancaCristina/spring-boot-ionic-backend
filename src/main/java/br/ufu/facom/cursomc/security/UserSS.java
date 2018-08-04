@@ -17,7 +17,7 @@ public class UserSS implements UserDetails{
 	private Integer id;
 	private String email;
 	private String senha;
-	private Collection<? extends GrantedAuthority> authorities;
+	private Collection<? extends GrantedAuthority> authorities; // Perfis de autorizacao (Cliente, ADMIN)
 	
 	public UserSS() {}
 	
@@ -79,5 +79,9 @@ public class UserSS implements UserDetails{
 	}
 	// Classe de um usuario que atende o Spring Security -> UserSS
 	
+	public boolean hasRole(Perfil perfil) {
+		// Verifica se meu objeto do tipo UserSS possui o perfil passado como parametro
+		return getAuthorities().contains(new SimpleGrantedAuthority(perfil.getDescricao()));
+	}
 	
 }

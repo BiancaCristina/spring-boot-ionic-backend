@@ -16,11 +16,14 @@ import org.springframework.stereotype.Service;
 import br.ufu.facom.cursomc.domain.Cidade;
 import br.ufu.facom.cursomc.domain.Cliente;
 import br.ufu.facom.cursomc.domain.Endereco;
+import br.ufu.facom.cursomc.domain.enums.Perfil;
 import br.ufu.facom.cursomc.domain.enums.TipoCliente;
 import br.ufu.facom.cursomc.dto.ClienteDTO;
 import br.ufu.facom.cursomc.dto.ClienteNewDTO;
 import br.ufu.facom.cursomc.repositories.ClienteRepository;
 import br.ufu.facom.cursomc.repositories.EnderecoRepository;
+import br.ufu.facom.cursomc.security.UserSS;
+import br.ufu.facom.cursomc.services.exceptions.AuthorizationException;
 import br.ufu.facom.cursomc.services.exceptions.DataIntegrityException;
 import br.ufu.facom.cursomc.services.exceptions.ObjectNotFoundException;
 
@@ -40,6 +43,16 @@ public class ClienteService {
 	private BCryptPasswordEncoder pe; // pe = passowrd encoder, vai codificar a senha
 	
 	public Cliente find(Integer id) {
+		// Testando nivel de autorizacao
+		UserSS user = UserService.authenticated(); // Pega o usuario logado
+		
+		if (user== null || ((!user.hasRole(Perfil.ADMIN)) && (!id.equals(user.getId()))) ) {
+			// Se o user for null ou (nao for ADMIN e nao eh ID do usuario logado)
+			throw new AuthorizationException("Acesso negado");
+		}
+		
+		// Fim do teste de nivel de autorizacao 
+		
 		Optional<Cliente> obj = repo.findById(id);
 		// TRATAMENTO DE ERRO PARA CASO NAO EXISTA OBJETO
 		return obj.orElseThrow( () -> new ObjectNotFoundException(
