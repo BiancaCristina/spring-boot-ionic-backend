@@ -50,7 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	// Essa variavel define quais endpoints permitirei apenas no POST
 	private static final String[] PUBLIC_MATCHERS_POST = {
-			"/clientes/**"
+			"/clientes/**",
+			"/auth/forgot/**"
 	};
 	
 	@Override
