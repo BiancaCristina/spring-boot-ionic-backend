@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import br.ufu.facom.cursomc.domain.Cliente;
 import br.ufu.facom.cursomc.repositories.ClienteRepository;
 import br.ufu.facom.cursomc.security.UserSS;
 
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 	// Essa classe faz a busca do usuario
 	@Autowired

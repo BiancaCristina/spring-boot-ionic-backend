@@ -18,6 +18,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import br.ufu.facom.cursomc.security.JWTAuthenticationFilter;
+import br.ufu.facom.cursomc.security.JWTUtil;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -27,6 +30,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	private JWTUtil jwtUtil;
 	
 	// Essa variavel define quais caminhos nao precisam estar bloqueados pro publico
 	private static final String[] PUBLIC_MATCHERS = {
@@ -58,6 +64,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
 			.anyRequest()
 			.authenticated();
+		
+		// O comando abaixo registra o meu JWTAuthenticationFilter
+		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		
 		// O comando abaixo impede que o sistema crie sessoes de usuario
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
