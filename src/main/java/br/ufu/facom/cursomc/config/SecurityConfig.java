@@ -19,6 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import br.ufu.facom.cursomc.security.JWTAuthenticationFilter;
+import br.ufu.facom.cursomc.security.JWTAuthorizationFilter;
 import br.ufu.facom.cursomc.security.JWTUtil;
 
 @Configuration
@@ -65,12 +66,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.anyRequest()
 			.authenticated();
 		
-		// O comando abaixo registra o meu JWTAuthenticationFilter
+		// O comando abaixo registra o meu JWTAuthenticationFilter (Filtro de Autenticacao)
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+		// Fim do comando
+		
+		// O comando abaixo registra meu JWTAuthorizationFilter (Filtro de Autorizacao)
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
+		// Fim do comando
 		
 		// O comando abaixo impede que o sistema crie sessoes de usuario
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		
+		// Fim do comando
 	}
 	
 	@Override
