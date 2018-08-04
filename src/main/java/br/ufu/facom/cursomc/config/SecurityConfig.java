@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -24,6 +25,7 @@ import br.ufu.facom.cursomc.security.JWTUtil;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
@@ -43,7 +45,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	// Essa variavel define quais caminhos nao precisam estar bloqueados pro publico (SOMENTE PRA LEITURA)
 	private static final String[] PUBLIC_MATCHERS_GET = {
 			"/produtos/**",
-			"/categorias/**",
+			"/categorias/**"
+	};
+	
+	// Essa variavel define quais endpoints permitirei apenas no POST
+	private static final String[] PUBLIC_MATCHERS_POST = {
 			"/clientes/**"
 	};
 	
@@ -61,6 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// O comando abaixo diz que eh pra permitir todos os caminhos do vetor "PUBLIC_MATCHERS"
 		// Alem disso, esse comando determina que todos os outros precisam de permissao
 		http.authorizeRequests()
+			.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll() // Permite o POST no vetor PUBLIC_MATCHERS_POST
 			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll() // Isso faz com que os caminhos listados em PUBLIC_MATCHERS_GET sao apenas pra leitura, o user nao pode inserir/deletar nada!
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
 			.anyRequest()

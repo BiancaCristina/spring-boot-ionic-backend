@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,6 +62,7 @@ public class ClienteResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')") // So admin acessa
 	@RequestMapping(value="/{id}",method= RequestMethod.DELETE) // REQUISICAO BASICA = GET
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		service.delete(id);		
@@ -68,6 +70,7 @@ public class ClienteResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')") // So admin acessa
 	@RequestMapping(method= RequestMethod.GET) // REQUISICAO BASICA = GET
 	public ResponseEntity<List<ClienteDTO>> findAll() {	
 		List <Cliente> list = service.findAll();
@@ -78,6 +81,7 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(listDTO);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')") // So admin acessa
 	@RequestMapping(value="/page",method= RequestMethod.GET) // REQUISICAO BASICA = GET
 	public ResponseEntity<Page<ClienteDTO>> findPage(
 			@RequestParam(name="page",defaultValue="0") Integer page, 
