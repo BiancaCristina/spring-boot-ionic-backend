@@ -143,6 +143,21 @@ public class ClienteService {
 	}
 	
 	public URI uploadProfilePicture(MultipartFile multiPartFile) {
-		return s3Service.uploadFile(multiPartFile);
+		UserSS user = UserService.authenticated(); // Pega o usuario logado
+		
+		if (user == null) {
+			// Isso significa que ninguem esta logado, lanca excecao
+			throw new AuthorizationException("Acesso negado");
+		}	
+		
+		URI uri = s3Service.uploadFile(multiPartFile);
+		
+		// Antes de retornar a URI, eu salvo a URI no cliente que esta logado
+		Cliente cli = find(user.getId()); // Pega ID do usuario logado e instancio um cliente
+		cli.setImageURL(uri.toString());
+		repo.save(cli);
+		// Fim
+		
+		return uri;
 	}
 }
