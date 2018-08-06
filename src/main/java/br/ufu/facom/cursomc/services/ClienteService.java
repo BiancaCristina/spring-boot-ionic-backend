@@ -55,6 +55,9 @@ public class ClienteService {
 	@Value("${img.prefix.client.profile}")
 	private String prefix; // Essa variavel armazena aquele prefixo "cp" do application.propperties
 	
+	@Value("${img.profile.size}")
+	private Integer size; // Essa variavel armazena aquele valor size do application.propperties
+	
 	public Cliente find(Integer id) {
 		// Testando nivel de autorizacao
 		UserSS user = UserService.authenticated(); // Pega o usuario logado
@@ -159,6 +162,9 @@ public class ClienteService {
 		}	
 		
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(multiPartFile); // Pega a imagem do multiPartFile
+		jpgImage = imageService.cropSquare(jpgImage); // Recorta a imagem
+		jpgImage = imageService.resize(jpgImage, size);
+		
 		String fileName = prefix + user.getId() + ".jpg"; // Isso aqui padroniza os nomes dos arquivos, ex: cliente1-> cp1.jpg, cliente2->cp2.jpg
 		
 		return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");	
