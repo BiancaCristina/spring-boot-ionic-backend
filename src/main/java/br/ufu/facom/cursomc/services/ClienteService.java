@@ -1,5 +1,6 @@
 package br.ufu.facom.cursomc.services;
 
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -7,6 +8,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,6 +48,12 @@ public class ClienteService {
 	
 	@Autowired
 	private S3Service s3Service;
+	
+	@Autowired
+	private ImageService imageService;
+	
+	@Value("${img.prefix.client.profile}")
+	private String prefix; // Essa variavel armazena aquele prefixo "cp" do application.propperties
 	
 	public Cliente find(Integer id) {
 		// Testando nivel de autorizacao
@@ -150,14 +158,9 @@ public class ClienteService {
 			throw new AuthorizationException("Acesso negado");
 		}	
 		
-		URI uri = s3Service.uploadFile(multiPartFile);
+		BufferedImage jpgImage = imageService.getJpgImageFromFile(multiPartFile); // Pega a imagem do multiPartFile
+		String fileName = prefix + user.getId() + ".jpg"; // Isso aqui padroniza os nomes dos arquivos, ex: cliente1-> cp1.jpg, cliente2->cp2.jpg
 		
-		// Antes de retornar a URI, eu salvo a URI no cliente que esta logado
-		Cliente cli = find(user.getId()); // Pega ID do usuario logado e instancio um cliente
-		cli.setImageURL(uri.toString());
-		repo.save(cli);
-		// Fim
-		
-		return uri;
+		return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");	
 	}
 }
