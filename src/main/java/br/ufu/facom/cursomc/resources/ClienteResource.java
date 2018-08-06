@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.ufu.facom.cursomc.domain.Cliente;
@@ -101,5 +102,12 @@ public class ClienteResource {
 		// ClienteDTO mostrara apenas os dados que me interessam quando estou imprimindo a lista de Clientes(id,nome)
 		Page<ClienteDTO> listDTO = list.map(obj -> new ClienteDTO(obj)); // Retirei "stream" e "collect"
 		return ResponseEntity.ok().body(listDTO);
+	}
+	
+	@RequestMapping(value="/picture",method=RequestMethod.POST) // Faz com que seja um metodo POST
+	public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name="file") MultipartFile file) {
+		URI uri = service.uploadProfilePicture(file); // Faz upload da imagem e tem como resposta a URI da imagem
+	
+		return ResponseEntity.created(uri).build();	// Retorna resposta HTTP 201 (recurso criado) e retorna a URI que esta no cabecalho
 	}
 }
