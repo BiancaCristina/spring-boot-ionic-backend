@@ -1,9 +1,7 @@
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 
-
 ### STS ###
-
 .apt_generated
 .classpath
 .factorypath
@@ -12,21 +10,13 @@
 .springBeans
 .sts4-cache
 
-
-src/main/resources/application.properties
-
-
 ### IntelliJ IDEA ###
-
 .idea
 *.iws
 *.iml
 *.ipr
 
-
-
 ### NetBeans ###
-
 /nbproject/private/
 /build/
 /nbbuild/
