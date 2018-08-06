@@ -22,4 +22,4 @@
 /nbbuild/
 /dist/
 /nbdist/
-/.nb-gradle/ ## APP PROPERTIES ## .application.properties ## APP PROPPERTIES DEV ## .application-dev.properties ## APP PROPERTIES PROD ## .application-prod.properties ## APP PROPPERTIES TEST ## .application-test.properties 
+/.nb-gradle/ ### APP PROPERTIES ### .application.properties ### APP PROPPERTIES DEV ### .application-dev.properties ### APP PROPERTIES PROD ### .application-prod.properties ### APP PROPPERTIES TEST ### .application-test.properties 
