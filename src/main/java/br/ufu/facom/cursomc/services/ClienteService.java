@@ -134,6 +134,25 @@ public class ClienteService {
 		return repo.findAll(pageRequest);
 	}
 	
+	public Cliente findByEmail(String email) {
+		// Procura um cliente usando seu email
+		UserSS user = UserService.authenticated(); // Procura quem eh o usuario autenticado
+		
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+			// Caso cliente nao exista ou (nao tenha permissao admin e nao eh o mesmo email do user logado)
+			throw new AuthorizationException("Acesso negado");
+		}
+	
+		Cliente obj = repo.findByEmail(email);
+		if (obj == null) {
+			// Se obj for nulo
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + user.getId() + ", Tipo: " + Cliente.class.getName());
+		}
+		
+		return obj;
+	}
+	
 	public Cliente fromDTO(ClienteDTO objDTO) {
 		// Metodo auxiliar que instancia um objeto do tipo Cliente a partir de um objeto do tipo ClienteDTO
 		return new Cliente(objDTO.getId(),objDTO.getNome(),objDTO.getEmail(),null,null, null);
