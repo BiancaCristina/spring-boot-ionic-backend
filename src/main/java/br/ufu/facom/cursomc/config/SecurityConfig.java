@@ -101,6 +101,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
 		return source;
+		
+		// Eu optei por nao fazer a liberacao manual do CORS aqui para o PUT e DELETE, entao caso de algum problema relacionado a isso, voltar aqui e fazer a config!
 	}
 	
 	@Bean
