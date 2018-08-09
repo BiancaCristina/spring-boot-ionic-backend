@@ -7,15 +7,35 @@ public class StandardError implements Serializable {
 	// Cria-se essa classe para retornar o erro com info completas!
 	private static final long serialVersionUID = 1L;
 	
-	private Integer status; // status HTTP do erro
-	private String msg; // Mensagem de erro
 	private Long timeStamp; // instante que ocorreu o erro
+	private Integer status; // status HTTP do erro
+	private String error; // indica o erro HTTP
+	private String message; // Mensagem de erro
+	private String path; // indica o caminho do erro
 	
-	public StandardError(Integer status, String msg, Long timeStamp) {
+	public StandardError(Long timeStamp, Integer status, String error, String message, String path) {
 		super();
-		this.status = status;
-		this.msg = msg;
 		this.timeStamp = timeStamp;
+		this.status = status;
+		this.error = error;
+		this.message = message;
+		this.path = path;
+	}
+
+	public Long getTimeStamp() {
+		return timeStamp;
+	}
+
+	public void setTimeStamp(Long timeStamp) {
+		this.timeStamp = timeStamp;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
 	}
 
 	public Integer getStatus() {
@@ -26,22 +46,22 @@ public class StandardError implements Serializable {
 		this.status = status;
 	}
 
-	public String getMsg() {
-		return msg;
+	public String getMessage() {
+		return message;
 	}
 
-	public void setMsg(String msg) {
-		this.msg = msg;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
-	public Long getTimeStamp() {
-		return timeStamp;
+	public String getPath() {
+		return path;
 	}
 
-	public void setTimeStamp(Long timeStamp) {
-		this.timeStamp = timeStamp;
+	public void setPath(String path) {
+		this.path = path;
 	}
 	
 	
-	
+
 }
