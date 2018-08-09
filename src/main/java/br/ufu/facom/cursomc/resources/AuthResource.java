@@ -33,6 +33,10 @@ public class AuthResource {
 		UserSS user = UserService.authenticated(); // Pega usuario logado
 		String token = jwtUtil.generateToken(user.getUsername()); // Gera novo token
 		response.addHeader("Authorization", "Bearer " + token); // Adicionad token
+		
+		// Expoe meu header personalizado (isso evita problema de CORS)
+		 response.addHeader("access-control-expose-headers", "Authorization");
+		 
 		return ResponseEntity.noContent().build();
 	}
 	

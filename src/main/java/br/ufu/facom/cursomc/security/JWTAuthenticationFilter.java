@@ -67,6 +67,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		String username = ((UserSS) auth.getPrincipal()).getUsername();
 		String token = jwtUtil.generateToken(username);
 		res.addHeader("Authorization", "Bearer " + token);
+		
+		// Expoe meu header personalizado (isso evita problema de CORS)
+		 res.addHeader("access-control-expose-headers", "Authorization");
 	}
 	
 	// O codigo abaixo foi acrescentado depois para deixar adequado com a versao 2.0 do Spring Boot
