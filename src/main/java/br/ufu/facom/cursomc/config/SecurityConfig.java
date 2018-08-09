@@ -45,7 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	// Essa variavel define quais caminhos nao precisam estar bloqueados pro publico (SOMENTE PRA LEITURA)
 	private static final String[] PUBLIC_MATCHERS_GET = {
 			"/produtos/**",
-			"/categorias/**"
+			"/categorias/**",
+			"/estados/**"
 	};
 	
 	// Essa variavel define quais endpoints permitirei apenas no POST
