@@ -4,7 +4,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication
 public class CursomcApplication implements CommandLineRunner{
@@ -22,6 +21,4 @@ public class CursomcApplication implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 		// Array as List = cria Lista automatica e posso colocar quantos elementos eu quiser dentro	
 	}	
-	
-	// Comentando so pra testar
 }

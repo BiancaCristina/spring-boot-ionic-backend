@@ -21,14 +21,20 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.ufu.facom.cursomc.domain.Categoria;
 import br.ufu.facom.cursomc.dto.CategoriaDTO;
 import br.ufu.facom.cursomc.services.CategoriaService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping(value="/categorias")
 public class CategoriaResource {
-	
+	// A anotacao @ApiOperation = define o nome da operacao na documentacao Swagger
+	// A anotacao @ApiResponses = define uma mensagem personalizada de um endpoint em uma operacao especifica
+		// Ou seja, aqui no metodo "delete", tem uma mensagem diferente da padrao pros status 404 e 400, mas em outros lugares da API que esse erro pode estourar a mensagem eh a padrao
 	@Autowired
 	private CategoriaService service;
 	
+	@ApiOperation(value="Busca por id")
 	@RequestMapping(value="/{id}",method= RequestMethod.GET) // REQUISICAO BASICA = GET
 	public ResponseEntity<Categoria> find(@PathVariable Integer id) {
 		// @PathVariable = faz com que {id} corresponda ao id passado como parametro (caminho da URL)
@@ -39,6 +45,7 @@ public class CategoriaResource {
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	@ApiOperation(value="Insere categoria")
 	@PreAuthorize("hasAnyRole('ADMIN')") // So admin acessa
 	@RequestMapping(method=RequestMethod.POST) // Faz com que seja um metodo POST
 	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDTO) {
@@ -53,6 +60,7 @@ public class CategoriaResource {
 		return ResponseEntity.created(uri).build();		
 	}
 	
+	@ApiOperation(value="Atualiza categoria")
 	@PreAuthorize("hasAnyRole('ADMIN')") // So admin acessa
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Void> update(@RequestBody @Valid CategoriaDTO objDTO, @PathVariable Integer id) {
@@ -64,6 +72,10 @@ public class CategoriaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "Não é possível excluir uma categoria que possui produtos"),
+			@ApiResponse(code = 404, message = "Código inexistente") })
+	@ApiOperation(value="Remove categoria")
 	@PreAuthorize("hasAnyRole('ADMIN')") // So admin acessa
 	@RequestMapping(value="/{id}",method= RequestMethod.DELETE) // REQUISICAO BASICA = GET
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
@@ -72,6 +84,7 @@ public class CategoriaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@ApiOperation(value="Retorna todas categorias")
 	@RequestMapping(method= RequestMethod.GET) // REQUISICAO BASICA = GET
 	public ResponseEntity<List<CategoriaDTO>> findAll() {	
 		List <Categoria> list = service.findAll();
@@ -82,6 +95,7 @@ public class CategoriaResource {
 		return ResponseEntity.ok().body(listDTO);
 	}
 	
+	@ApiOperation(value="Retorna todas categorias com paginação")
 	@RequestMapping(value="/page",method= RequestMethod.GET) // REQUISICAO BASICA = GET
 	public ResponseEntity<Page<CategoriaDTO>> findPage(
 			@RequestParam(name="page",defaultValue="0") Integer page, 
