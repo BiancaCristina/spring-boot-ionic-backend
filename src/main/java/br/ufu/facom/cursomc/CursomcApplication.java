@@ -7,7 +7,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication
-@EnableWebMvc
 public class CursomcApplication implements CommandLineRunner{
 	// Para alterar porta, vai no resources e coloca: server.port=${port:8081}, 8081 eh a porta nova!
 	
